@@ -146,6 +146,278 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "torso",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "horns",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "arms",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "eyes",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "legs",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "tail",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint8",
+            "name": "ability1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "ability2",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct Epoch.Attributes",
+        "name": "attributes",
+        "type": "tuple"
+      }
+    ],
+    "name": "TokenMintedByAdmin",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "backendId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "torso",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "horns",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "arms",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "eyes",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "legs",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "stat",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Epoch.BodyPart",
+            "name": "tail",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint8",
+            "name": "ability1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "ability2",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct Epoch.Attributes",
+        "name": "attributes",
+        "type": "tuple"
+      }
+    ],
+    "name": "TokenMintedWithSignature",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "from",

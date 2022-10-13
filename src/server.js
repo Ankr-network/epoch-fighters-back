@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const controllers = require('./controllers');
+const mintTrackerService = require('./services/MintTrackerService');
 
 const port = process.env.PORT || 3000;
 const db = require('./db/DataBase');
@@ -63,6 +64,7 @@ app.listen(port, function (err) {
     console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
 });
 
+mintTrackerService.startTracking();
 
 //*********************************************************
 //    Quick and dirty way to detect event loop blocking

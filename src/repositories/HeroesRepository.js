@@ -21,6 +21,10 @@ class HeroesRepository {
     const command = new HeroModel(hero);
     return await command.save();
   }
+
+  async updateTokenId(id, tokenId) {
+    await HeroModel.updateOne({_id: id}, {tokenId});
+  }
 }
 
 module.exports = new HeroesRepository();

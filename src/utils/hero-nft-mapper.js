@@ -1,5 +1,5 @@
 const {DateTime} = require("luxon");
-const web3 = require("web3");
+const {hexToNumber} = require("../utils/HexUtils");
 
 const heroNftMapper = (hero) => {
   const {
@@ -15,7 +15,7 @@ const heroNftMapper = (hero) => {
   const expireTime = Math.floor(DateTime.now().plus({minutes: 10}).toMillis() / 1000);
 
   return {
-    tokenId: web3.utils.toBN(hero.id).toString(),
+    tokenId: hexToNumber(hero.id),
     torso: bodyPartToArray(torso),
     horns: bodyPartToArray(horns),
     arms: bodyPartToArray(arms),

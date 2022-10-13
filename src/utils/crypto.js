@@ -1,21 +1,96 @@
 const Web3 = require("web3");
+const abi = require("../../assets/epoch-abi.json");
+const EventDecoder = require("../utils/EventDecoder");
+const web3 = require("web3");
+const BigNumber = require('bignumber.js');
 
-const web3 = new Web3();
+const RPC_NODE_URL = process.env.RPC_NODE_URL;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+const CONNECTED_LIFECICLE_EVENT = "connected";
+const RECEIVED_LIFECICLE_EVENT = "data";
+const ERROR_LIFECICLE_EVENT = "error";
 
-const checkAddress = (address, message, signature) => {
-  return recoverAddress(message, signature) == address;
-};
+class Crypto
+{
+  constructor() {
+    this.web3 = new Web3(RPC_NODE_URL);
+    this.contract = new this.web3.eth.Contract(abi, CONTRACT_ADDRESS);
+    this.logDecoders = this.getDecoders();
+    console.log(this.logDecoders);
+  }
 
-const recoverAddress = (message, signature) => {
-  return web3.eth.accounts.recover(message, signature);
-};
+  checkAddress(address, message, signature) {
+    return this.recoverAddress(message, signature) === address;
+  }
 
-const hexToBytes = (hex) => {
-  return web3.utils.hexToBytes(hex);
-};
+  recoverAddress(message, signature) {
+    return this.web3.eth.accounts.recover(message, signature);
+  }
 
-module.exports = {
-  recoverAddress,
-  checkAddress,
-  hexToBytes
-};
+  hexToBytes(hex) {
+    return this.web3.utils.hexToBytes(hex);
+  };
+
+  getPastEvents(eventName, fromBlock) {
+    return this.contract.getPastEvents(eventName, {
+      fromBlock: fromBlock,
+      toBlock: "latest"
+    });
+  }
+
+  subscribeToEvents(eventName, fromBlock, eventHandler) {
+    const subscribeToEvent = this.contract.events[eventName];
+    return new Promise((resolve, reject) => {
+      subscribeToEvent({fromBlock})
+        .on(CONNECTED_LIFECICLE_EVENT, (subscriptionId) => {
+          resolve(subscriptionId);
+        })
+        .on(RECEIVED_LIFECICLE_EVENT, (even) => {
+          eventHandler(even);
+        })
+        .on(ERROR_LIFECICLE_EVENT, function(error) {
+          reject(error);
+        });
+    });
+  }
+
+  unsubscribeAll() {
+    this.web3.eth.clearSubscriptions();
+  }
+
+  async getLogsByHash(hash) {
+    const receipt = await this.web3.eth.getTransactionReceipt(hash);
+    if(!receipt) {
+      throw new Error(`There is no transaction with hash ${hash}`);
+    }
+    if(!receipt.logs) {
+      throw new Error(`Transaction with hash ${hash} has not any logs`);
+    }
+    try {
+      return receipt.logs.map(log => this.parseLog(log));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getDecoders() {
+    return abi
+      .filter(json => json.type === 'event')
+      .map(json => new EventDecoder(json));
+  }
+
+  parseLog(log) {
+    const decoder = this.findDecoder(log);
+    if(!decoder) {
+      console.log(`Decoder for ${log.topics[0]} didn't find`);
+      return null;
+    }
+    return decoder.decode(log);
+  }
+
+  findDecoder(log) {
+    return this.logDecoders.find(decoder => decoder.signature === log.topics[0]);
+  }
+}
+
+module.exports = new Crypto();

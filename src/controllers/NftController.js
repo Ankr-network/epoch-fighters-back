@@ -21,4 +21,19 @@ router.get('/prepare/:heroid', async (req, res, next) => {
   }
 });
 
+router.put('/check', async (req, res, next) => {
+  const token = req.headers.token;
+  const hash = req.body.hash;
+  try {
+    const mintStatus = await service.checkMintedNft(hash, token);
+    res
+      .status(200)
+      .json({minted: mintStatus});
+  } catch (e) {
+    res
+      .status(500)
+      .json({error: e.message});
+  }
+});
+
 module.exports = router;
