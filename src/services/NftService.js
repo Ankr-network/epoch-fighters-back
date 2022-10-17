@@ -8,7 +8,8 @@ const {numberToHex} = require("../utils/HexUtils");
 
 const SERVER_PRIVATE_KEY = process.env.SERVER_PRIVATE_KEY;
 const RPC_NODE_URL = process.env.RPC_NODE_URL;
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+// const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = "0xb42C39123017cf9a95cF752eCff09C1893De4d9C";
 const CHAIN_ID = process.env.CHAIN_ID;
 const SIGNING_DOMAIN_NAME = "Epoch"
 const SIGNING_DOMAIN_VERSION = "1"
