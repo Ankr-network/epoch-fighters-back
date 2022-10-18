@@ -1,5 +1,6 @@
 const Web3 = require("web3");
 const abi = require("../../assets/epoch-abi.json");
+const crypto = require("crypto");
 const EventDecoder = require("../utils/EventDecoder");
 
 const RPC_NODE_URL = process.env.RPC_NODE_URL;
@@ -28,6 +29,10 @@ class Crypto
   hexToBytes(hex) {
     return this.web3.utils.hexToBytes(hex);
   };
+
+  bytesToHex(bytes) {
+    return this.web3.utils.bytesToHex(bytes);
+  }
 
   getPastEvents(eventName, fromBlock) {
     return this.contract.getPastEvents(eventName, {
@@ -88,6 +93,24 @@ class Crypto
 
   findDecoder(log) {
     return this.logDecoders.find(decoder => decoder.signature === log.topics[0]);
+  }
+
+  async DeriveHmac(message, secret) {
+    const enc = new TextEncoder("utf-8");
+    const algorithm = { name: "HMAC", hash: "SHA-256" };
+    const key = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(secret),
+      algorithm,
+      false, ["sign", "verify"]
+    );
+    const hashBuffer = await crypto.subtle.sign(
+      algorithm.name,
+      key,
+      enc.encode(message)
+    );
+    const hash = Array.from(new Uint8Array(hashBuffer));
+    return this.bytesToHex(hash);
   }
 }
 

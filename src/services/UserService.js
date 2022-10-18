@@ -43,9 +43,18 @@ class UserService {
     }
   }
 
-  async getAuthorizeStatus(address) {
+  removeToken(token) {
+    const user = repository.getUserByToken(token);
+    if(user) {
+      repository.updateToken(user.address, null, null);
+    }
+  }
+
+  async getAuthorizeStatus(address, hmac) {
     const user = await repository.getUserByAddress(address);
-    return !!user && DateTime.fromISO(user.expireAt) > DateTime.now();
+    const derivedHmac = await cryptoUtils.DeriveHmac(address, user.token);
+    console.log(hmac.toLowerCase(), derivedHmac.toLowerCase())
+    return !!user && hmac.toLowerCase() === derivedHmac.toLowerCase() && DateTime.fromISO(user.expireAt) > DateTime.now();
   }
 
   async tokenIsActive(token) {
