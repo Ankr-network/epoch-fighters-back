@@ -3,8 +3,16 @@ const {uniqueNamesGenerator, adjectives, colors, animals, names} = require("uniq
 const bodyPartTypes = require("../constants/body-part-types");
 const bodyPartsRepository = require("../repositories/BodyPartRepository");
 const abilities = require("../constants/abilities-types");
+const {ProbabilityBasedRandom} = require("../utils/ProbabilityBasedRandom");
+
+const RARITY_TYPES = [1, 2, 3, 4, 5];
+const FREQUENCY = [5, 3, 1, 0.5, 0.2];
 
 class CharacterGeneratorService {
+  constructor() {
+    this.random = new ProbabilityBasedRandom(RARITY_TYPES, FREQUENCY);
+  }
+
   async createHeroName() {
     let name = this.createUniqueName();
     while (await repository.heroIsExisted(name)) {
@@ -29,11 +37,12 @@ class CharacterGeneratorService {
     return {...attributes, ...abilitiesPart};
   }
 
-  async getRandomBodyParts(rate) {
+  async getRandomBodyParts() {
     const bodyParts = Object.keys(bodyPartTypes);
     const attributes = {};
     for (const partName of bodyParts) {
-      const bodyPart = await bodyPartsRepository.getByTypeAndLevel(bodyPartTypes[partName], rate);
+      const rarity = this.random.next();
+      const bodyPart = await bodyPartsRepository.getByTypeAndLevel(bodyPartTypes[partName], rarity);
       const [startRange, endRange] = bodyPart.range;
       const random = this.getRandom(startRange, endRange);
 
@@ -61,8 +70,8 @@ class CharacterGeneratorService {
 
   getMaxAbilityNumber() {
     let max = 0;
-    for(const key of Object.keys(abilities)) {
-      if(abilities[key] > max) {
+    for (const key of Object.keys(abilities)) {
+      if (abilities[key] > max) {
         max = abilities[key];
       }
     }
