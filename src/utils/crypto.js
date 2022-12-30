@@ -3,8 +3,10 @@ const abi = require("../../assets/epoch-abi.json");
 const crypto = require("crypto");
 const EventDecoder = require("../utils/EventDecoder");
 
-const RPC_NODE_URL = process.env.RPC_NODE_URL;
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+// const RPC_NODE_URL = process.env.RPC_NODE_URL;
+const RPC_NODE_URL = "https://rpc.ankr.com/eth_goerli";
+// const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = "0xBe64a6350052DF79D40Fe7486d6254Bd044a3c0E";
 const CONNECTED_LIFECICLE_EVENT = "connected";
 const RECEIVED_LIFECICLE_EVENT = "data";
 const ERROR_LIFECICLE_EVENT = "error";
@@ -63,6 +65,7 @@ class Crypto
 
   async getLogsByHash(hash) {
     const receipt = await this.web3.eth.getTransactionReceipt(hash);
+    console.log(receipt);
     if(!receipt) {
       throw new Error(`There is no transaction with hash ${hash}`);
     }

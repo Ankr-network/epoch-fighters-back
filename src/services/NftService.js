@@ -7,10 +7,12 @@ const crypto = require("../utils/crypto");
 const {numberToHex} = require("../utils/HexUtils");
 
 const SERVER_PRIVATE_KEY = process.env.SERVER_PRIVATE_KEY;
-const RPC_NODE_URL = process.env.RPC_NODE_URL;
+// const RPC_NODE_URL = process.env.RPC_NODE_URL;
+const RPC_NODE_URL = "https://rpc.ankr.com/eth_goerli";
 // const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
-const CONTRACT_ADDRESS = "0x83261c28968a986DA3aCf2B179c144E56084B1B6";
-const CHAIN_ID = process.env.CHAIN_ID;
+const CONTRACT_ADDRESS = "0xBe64a6350052DF79D40Fe7486d6254Bd044a3c0E";
+// const CHAIN_ID = process.env.CHAIN_ID;
+const CHAIN_ID = 5;
 const SIGNING_DOMAIN_NAME = "Epoch"
 const SIGNING_DOMAIN_VERSION = "1"
 const EVENT_NAME = "TokenMintedWithSignature";

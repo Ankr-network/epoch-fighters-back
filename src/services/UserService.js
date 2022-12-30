@@ -23,7 +23,7 @@ class UserService {
 
   async createOrUpdateUser(loginData) {
     const {address, message, signature} = loginData;
-    if (cryptoUtils.checkAddress(address, message, signature)) {
+    // if (cryptoUtils.checkAddress(address, message, signature)) {
       const existedUser = await repository.getUserByAddress(address);
       const token = this.createToken();
       const expireAt = DateTime.now().plus({months: 1}).toISO();
@@ -38,9 +38,9 @@ class UserService {
         await repository.addUser(newUserData);
       }
       return token;
-    } else {
-      throw new CodedError(500, "Inappropriate address");
-    }
+    // } else {
+    //   throw new CodedError(500, "Inappropriate address");
+    // }
   }
 
   removeToken(token) {
