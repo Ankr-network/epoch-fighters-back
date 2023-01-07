@@ -1,7 +1,7 @@
 const {DateTime} = require("luxon");
 const {hexToNumber} = require("../utils/HexUtils");
 
-const heroNftMapper = (hero) => {
+const mapHeroToNftVoucher = (hero) => {
   const {
     torso,
     horns,
@@ -9,6 +9,7 @@ const heroNftMapper = (hero) => {
     eyes,
     legs,
     tail,
+    speed,
     ability1,
     ability2
   } = hero.attributes;
@@ -22,6 +23,7 @@ const heroNftMapper = (hero) => {
     eyes: bodyPartToArray(eyes),
     legs: bodyPartToArray(legs),
     tail: bodyPartToArray(tail),
+    speed,
     ability1,
     ability2,
     expireTime
@@ -32,4 +34,4 @@ const bodyPartToArray = (bodyPart) => {
   return [bodyPart.id, bodyPart.stat];
 }
 
-module.exports = heroNftMapper;
+module.exports = mapHeroToNftVoucher;

@@ -1,16 +1,17 @@
 const ethers = require('ethers');
 const userRepository = require("../repositories/UsersRepository");
 const heroRepository = require("../repositories/HeroesRepository");
-const heroNftMapper = require("../utils/hero-nft-mapper");
+const mapHeroToNftVoucher = require("../utils/hero-nft-mapper");
 const CodedError = require('../utils/CodedError');
 const crypto = require("../utils/crypto");
 const {numberToHex} = require("../utils/HexUtils");
+const {NFT_VOUCHER_TYPES} = require("../constants/nft-voucher-types");
 
 const SERVER_PRIVATE_KEY = process.env.SERVER_PRIVATE_KEY;
 // const RPC_NODE_URL = process.env.RPC_NODE_URL;
 const RPC_NODE_URL = "https://rpc.ankr.com/eth_goerli";
 // const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
-const CONTRACT_ADDRESS = "0x979CB3724aB448507A6b197198688d370c8Ff099";
+const CONTRACT_ADDRESS = "0xE401ed41086729470f504b631ca6aa1e356Da029";
 // const CHAIN_ID = process.env.CHAIN_ID;
 const CHAIN_ID = 5;
 const SIGNING_DOMAIN_NAME = "Epoch"
@@ -28,8 +29,7 @@ class NftService {
     const hero = await heroRepository.getHeroById(heroId);
 
     if (hero.userId.equals(user._id)) {
-      const heroNftVoucher = heroNftMapper(hero);
-      console.log(heroNftVoucher);
+      const heroNftVoucher = mapHeroToNftVoucher(hero);
       return this.signData(heroNftVoucher);
     } else {
       throw new CodedError(401, `Fighter ${hero.name} doesn't belong to your account`);
@@ -38,21 +38,7 @@ class NftService {
 
   async signData(heroNftVoucher) {
     const domain = await this.getSigningDomain()
-    const types = {
-      ItemInfo: [
-        {name: "tokenId", type: "uint256"},
-        {name: "torso", type: "uint8[2]"},
-        {name: "horns", type: "uint8[2]"},
-        {name: "arms", type: "uint8[2]"},
-        {name: "eyes", type: "uint8[2]"},
-        {name: "legs", type: "uint8[2]"},
-        {name: "tail", type: "uint8[2]"},
-        {name: "ability1", type: "uint8"},
-        {name: "ability2", type: "uint8"},
-        {name: "expireTime", type: "uint256"},
-      ]
-    };
-    const signature = await this.signer._signTypedData(domain, types, heroNftVoucher);
+    const signature = await this.signer._signTypedData(domain, NFT_VOUCHER_TYPES, heroNftVoucher);
     return {
       ...heroNftVoucher,
       signature: crypto.hexToBytes(signature),
