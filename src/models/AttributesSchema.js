@@ -16,6 +16,7 @@ const AttributesSchema = Schema({
   eyes: BodyPartSchema,
   legs: BodyPartSchema,
   tail: BodyPartSchema,
+  speed: Number,
   ability1: Number,
   ability2: Number
 });

@@ -22,7 +22,7 @@ class HeroService {
     const hero = {
       name: await characterGeneratorService.createHeroName(),
       userId: user.id,
-      attributes: await characterGeneratorService.createAttributes(user.rate)
+      attributes: await characterGeneratorService.createAttributes()
     }
 
     return await repository.addHeroItem(hero);

@@ -1,25 +1,25 @@
 class ProbabilityBasedRandom {
-  constructor(variants, frequency) {
-    this.variants = variants;
-    this.probSumList = this.calculateProbabilitySum(frequency);
+  constructor(rarityConfig) {
+    this.variants = this.collectVariants(rarityConfig);
+    const rarityValues = this.collectRarityValues(rarityConfig);
+    this.probSumList = this.calculateProbabilitySum(rarityValues);
+    this.probabilitySum = this.getProbabilitySum();
   }
 
   next() {
-    const variantsLength = this.variants.length - 1;
-
-    const randomSeed = Math.random() * this.probSumList[variantsLength];
-    let ceilIndex = this.findCeil(this.probSumList, randomSeed, variantsLength);
+    const randomSeed = Math.random() * this.probabilitySum;
+    let ceilIndex = this.findCeil(this.probSumList, randomSeed);
 
     return this.variants[ceilIndex];
   }
 
-  calculateProbabilitySum(frequency) {
+  calculateProbabilitySum(rarityValues) {
     const probSumList = [];
 
-    probSumList[0] = frequency[0];
+    probSumList[0] = rarityValues[0];
 
-    for (let i = 1; i < frequency.length; ++i) {
-      probSumList[i] = probSumList[i - 1] + frequency[i];
+    for (let i = 1; i < rarityValues.length; ++i) {
+      probSumList[i] = probSumList[i - 1] + rarityValues[i];
     }
 
     return probSumList;
@@ -34,6 +34,19 @@ class ProbabilityBasedRandom {
       }
       zeroGround = probSumList[i];
     }
+  }
+
+  getProbabilitySum() {
+    const variantsLength = this.variants.length - 1;
+    return this.probSumList[variantsLength];
+  }
+
+  collectVariants(rarityConfig) {
+    return Object.keys(rarityConfig);
+  }
+
+  collectRarityValues(rarityConfig) {
+    return Object.values(rarityConfig);
   }
 }
 

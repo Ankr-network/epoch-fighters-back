@@ -12,10 +12,9 @@ class EnemyService {
   }
 
   async addEnemy(token) {
-    const user = await userRepository.getUserByToken(token);
     const enemy = {
       name: await characterGeneratorService.createHeroName(),
-      attributes: await characterGeneratorService.createAttributes(user.rate)
+      attributes: await characterGeneratorService.createAttributes()
     }
 
     return await repository.addEnemy(enemy);
