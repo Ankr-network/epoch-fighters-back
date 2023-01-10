@@ -30,6 +30,9 @@ class NftService {
 
     if (hero.userId.equals(user._id)) {
       const heroNftVoucher = mapHeroToNftVoucher(hero);
+
+      heroNftVoucher.speed *= 10;
+
       return this.signData(heroNftVoucher);
     } else {
       throw new CodedError(401, `Fighter ${hero.name} doesn't belong to your account`);

@@ -65,7 +65,6 @@ class Crypto
 
   async getLogsByHash(hash) {
     const receipt = await this.web3.eth.getTransactionReceipt(hash);
-    console.log(receipt);
     if(!receipt) {
       throw new Error(`There is no transaction with hash ${hash}`);
     }
