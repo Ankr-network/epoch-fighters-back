@@ -49,11 +49,11 @@ router.get('/owner/:address', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    // const token = req.headers.token;
-    // const heroItem = await heroService.addHero(token);
+    const token = req.headers.token;
+    const heroItem = await heroService.addHero(token);
     res
       .status(201)
-      .json({});
+      .json(heroItem);
   } catch (e) {
     res
       .status(500)
